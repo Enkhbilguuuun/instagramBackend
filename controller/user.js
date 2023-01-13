@@ -14,6 +14,32 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
+export const userLogIn = async (req, res) => {
+try {
+  const {email, password} = req.body;
+  const user = await User.findOne({
+    email : email
+  });
+  if(user){
+    if(user.password !== password){
+      throw new Error("email or pass is wrong");
+    }
+    res.status(200).send({
+      data: "amjilttai nevterlee",
+    });
+  }else {
+    res.status(400).send({
+      data:"user not found"
+    });
+  }
+} catch (error) {
+  res.status(400).send({
+    success:false,
+    data:error.message
+  })
+}
+}
+
 export const createUser = async (req, res) => {
   try {
     const user = await User.create(req.body);
